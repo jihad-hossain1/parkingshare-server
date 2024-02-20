@@ -1,5 +1,6 @@
 const { GraphQLObjectType, GraphQLSchema } = require("graphql");
 const { users, user } = require("../graphql/query/user.Query");
+const { divisions, division } = require("../graphql/query/location.query");
 const {
   createUser,
   updateUser,
@@ -12,6 +13,9 @@ const RootQuery = new GraphQLObjectType({
     // user
     users,
     user,
+    // locations
+    divisions,
+    division,
   },
 });
 
