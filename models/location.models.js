@@ -48,6 +48,21 @@ const upazilaSchema = new mongoose.Schema({
   },
 });
 
+const unionSchema = new mongoose.Schema({
+  zid: { type: String, required: true, unique: true },
+  upazilla_zid: { type: String },
+  bn_name: { type: String },
+  url: { type: String },
+  about: { type: String },
+  image: { type: String },
+  name: {
+    type: String,
+    required: true,
+  },
+});
+
+const Union = mongoose.models.Union || mongoose.model("Union", unionSchema);
+
 const Upazila =
   mongoose.models.Upazila || mongoose.model("Upazila", upazilaSchema);
 
@@ -57,4 +72,4 @@ const District =
 const Division =
   mongoose.models.Division || mongoose.model("Division", divisionSchema);
 
-module.exports = { Division, District, Upazila };
+module.exports = { Division, District, Upazila, Union };

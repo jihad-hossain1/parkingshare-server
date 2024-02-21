@@ -8,7 +8,7 @@ const {
   GraphQLNonNull,
   GraphQLInputObjectType,
 } = require("graphql");
-const { District } = require("../models/location.models");
+const { District, Upazila, Union } = require("../models/location.models");
 
 const UserType = new GraphQLObjectType({
   name: "User",
@@ -61,6 +61,17 @@ const DistrictType = new GraphQLObjectType({
     about: { type: GraphQLString },
     image: { type: GraphQLString },
     name: { type: GraphQLString },
+    upazilas: {
+      type: new GraphQLList(UpazilaType),
+      resolve: async (parent, args) => {
+        try {
+          const upazilas = await Upazila.find({ district_zid: parent?.zid });
+          return upazilas;
+        } catch (error) {
+          throw new Error(error.message);
+        }
+      },
+    },
   }),
 });
 
@@ -75,7 +86,38 @@ const UpazilaType = new GraphQLObjectType({
     about: { type: GraphQLString },
     image: { type: GraphQLString },
     name: { type: GraphQLString },
+    unions: {
+      type: new GraphQLList(UnionType),
+      resolve: async (parent, args) => {
+        try {
+          const unions = await Union.find({ upazilla_zid: parent?.zid });
+          return unions;
+        } catch (error) {
+          throw new Error(error.message);
+        }
+      },
+    },
   }),
 });
 
-module.exports = { UserType, DivisionType, DistrictType, UpazilaType };
+const UnionType = new GraphQLObjectType({
+  name: "Union",
+  fields: () => ({
+    id: { type: GraphQLID },
+    zid: { type: GraphQLString },
+    upazilla_zid: { type: GraphQLString },
+    bn_name: { type: GraphQLString },
+    url: { type: GraphQLString },
+    about: { type: GraphQLString },
+    image: { type: GraphQLString },
+    name: { type: GraphQLString },
+  }),
+});
+
+module.exports = {
+  UserType,
+  DivisionType,
+  DistrictType,
+  UpazilaType,
+  UnionType,
+};
