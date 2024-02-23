@@ -1,6 +1,10 @@
 const { GraphQLObjectType, GraphQLSchema } = require("graphql");
 const { users, user } = require("../graphql/query/user.Query");
 const { divisions, division } = require("../graphql/query/location.query");
+const { getParkingLots } = require("../graphql/query/parkingLot.query");
+
+// mutation importer
+const { createParkingLot } = require("../graphql/mutation/parkingLot.mutation");
 const {
   createUser,
   updateUser,
@@ -16,6 +20,8 @@ const RootQuery = new GraphQLObjectType({
     // locations
     divisions,
     division,
+    // pakinglots
+    getParkingLots,
   },
 });
 
@@ -26,6 +32,8 @@ const RootMutation = new GraphQLObjectType({
     createUser,
     updateUser,
     deleteUser,
+    // parkinglot
+    createParkingLot,
   },
 });
 
