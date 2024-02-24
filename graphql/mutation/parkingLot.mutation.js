@@ -33,7 +33,7 @@ const createParkingLotCategory = {
       }
       const trimed = name.trim();
 
-      const findCategory = Category.findOne({ name: trimed });
+      const findCategory = await Category.findOne({ name: trimed });
 
       if (findCategory) {
         return new Error("category are alredy exist");

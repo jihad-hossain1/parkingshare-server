@@ -1,6 +1,10 @@
 const { GraphQLID, GraphQLList, GraphQLNonNull } = require("graphql");
-const { ParkingLotType } = require("../../typeDefs/parkingLotTypeDefs");
+const {
+  ParkingLotType,
+  ParkingLotCategoryType,
+} = require("../../typeDefs/parkingLotTypeDefs");
 const ParkingLot = require("../../models/parkingLot.models");
+const Category = require("../../models/category.models");
 
 const getParkingLots = {
   type: new GraphQLList(ParkingLotType),
@@ -37,4 +41,17 @@ const parkingLot = {
   },
 };
 
-module.exports = { getParkingLots, parkingLot };
+const getParkingLotCategories = {
+  type: new GraphQLList(ParkingLotCategoryType),
+  resolve: async () => {
+    try {
+      const categories = await Category.find();
+      // console.log(categories);
+      return categories;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+};
+
+module.exports = { getParkingLots, parkingLot, getParkingLotCategories };

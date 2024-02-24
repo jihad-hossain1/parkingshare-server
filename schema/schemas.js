@@ -4,12 +4,14 @@ const { divisions, division } = require("../graphql/query/location.query");
 const {
   getParkingLots,
   parkingLot,
+  getParkingLotCategories,
 } = require("../graphql/query/parkingLot.query");
 
 // mutation importer
 const {
   createParkingLot,
   applyForParkingLot,
+  createParkingLotCategory,
 } = require("../graphql/mutation/parkingLot.mutation");
 const {
   createUser,
@@ -36,6 +38,7 @@ const RootQuery = new GraphQLObjectType({
     // pakinglots
     getParkingLots,
     parkingLot,
+    getParkingLotCategories,
   },
 });
 
@@ -54,6 +57,7 @@ const RootMutation = new GraphQLObjectType({
     // parkinglot
     createParkingLot,
     applyForParkingLot,
+    createParkingLotCategory,
   },
 });
 
