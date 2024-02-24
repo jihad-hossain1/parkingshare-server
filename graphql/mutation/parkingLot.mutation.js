@@ -11,13 +11,12 @@ const { ParkingLotType } = require("../../typeDefs/parkingLotTypeDefs");
 const {
   AddressInput,
   PriceInput,
-  ParkingLotApproveStatusInput,
   AvilableLotInput,
   LotTypeInput,
 } = require("../../typeDefs/AllInputType");
 const ParkingLot = require("../../models/parkingLot.models");
 const { default: mongoose } = require("mongoose");
-const validateJSON = require("../../utils/validateJson");
+
 
 const createParkingLot = {
   type: ParkingLotType,

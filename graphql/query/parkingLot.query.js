@@ -1,4 +1,4 @@
-const { GraphQLID, GraphQLList } = require("graphql");
+const { GraphQLID, GraphQLList, GraphQLNonNull } = require("graphql");
 const { ParkingLotType } = require("../../typeDefs/parkingLotTypeDefs");
 const ParkingLot = require("../../models/parkingLot.models");
 
@@ -14,4 +14,27 @@ const getParkingLots = {
   },
 };
 
-module.exports = { getParkingLots };
+const parkingLot = {
+  type: ParkingLotType,
+  args: { id: { type: new GraphQLNonNull(GraphQLID) } },
+
+  resolve: async (parent, { id }) => {
+    try {
+      // check parking id given or vald id or not
+      if (id == "" && !mongoose.Types.ObjectId.isValid(id)) {
+        return new Error("parking id empty are not allow || id is not valid");
+      }
+
+      // find a specific
+      const parkingLot = await ParkingLot.findById(id);
+      if (!parkingLot) {
+        return new Error("Parkinglot not found");
+      }
+      return parkingLot;
+    } catch (error) {
+      return new Error(error);
+    }
+  },
+};
+
+module.exports = { getParkingLots, parkingLot };

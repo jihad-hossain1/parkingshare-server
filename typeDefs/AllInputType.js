@@ -1,8 +1,5 @@
 const {
-  GraphQLObjectType,
   GraphQLString,
-  GraphQLID,
-  GraphQLList,
   GraphQLInt,
   GraphQLScalarType,
   GraphQLNonNull,
