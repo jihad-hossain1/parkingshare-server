@@ -16,15 +16,37 @@ const createUser = {
     fullname: { type: new GraphQLNonNull(GraphQLString) },
     email: { type: new GraphQLNonNull(GraphQLString) },
     password: { type: new GraphQLNonNull(GraphQLString) },
+    image: { type: new GraphQLNonNull(GraphQLString) },
   },
-  resolve: async (parent, args) => {
-    const user = new User({
-      fullname: args.name,
-      email: args.email,
-      password: args.password,
-    });
-    return await user.save();
-    // Client.create();
+  resolve: async (parent, { fullname, email, password, image }) => {
+    console.log({ fullname, email, password, image });
+    try {
+      if (fullname === "") {
+        return new Error("fullname field are not allow empty");
+      } else if (email === "") {
+        return new Error("email field are not allow empty");
+      } else if (password === "") {
+        return new Error("password field are not allow empty");
+      } else if (image === "") {
+        return new Error("image field are not allow empty");
+      }
+
+      const userAlready = await User.findOne({ email: email });
+      if (userAlready) {
+        return new Error("user email alredy exist");
+      }
+
+      const newuser = new User({
+        fullname: fullname,
+        email: email,
+        password: password,
+        image: image,
+      });
+      const saveUser = await newuser.save();
+      return saveUser;
+    } catch (error) {
+      throw new Error(error);
+    }
   },
 };
 

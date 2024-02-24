@@ -7,7 +7,10 @@ const {
 } = require("../graphql/query/parkingLot.query");
 
 // mutation importer
-const { createParkingLot } = require("../graphql/mutation/parkingLot.mutation");
+const {
+  createParkingLot,
+  applyForParkingLot,
+} = require("../graphql/mutation/parkingLot.mutation");
 const {
   createUser,
   updateUser,
@@ -50,6 +53,7 @@ const RootMutation = new GraphQLObjectType({
     updateUnion,
     // parkinglot
     createParkingLot,
+    applyForParkingLot,
   },
 });
 

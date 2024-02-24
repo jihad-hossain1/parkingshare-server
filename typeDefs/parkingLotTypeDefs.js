@@ -9,6 +9,14 @@ const {
   GraphQLInputObjectType,
 } = require("graphql");
 
+const ParkingLotCategoryType = new GraphQLObjectType({
+  name: "ParkingLotCategory",
+  fields: () => ({
+    id: { type: GraphQLID },
+    name: { type: GraphQLString },
+  }),
+});
+
 const ParkingLotType = new GraphQLObjectType({
   name: "ParkingLot",
   fields: () => ({
@@ -56,4 +64,4 @@ const ParkingLotType = new GraphQLObjectType({
   }),
 });
 
-module.exports = { ParkingLotType };
+module.exports = { ParkingLotType, ParkingLotCategoryType };

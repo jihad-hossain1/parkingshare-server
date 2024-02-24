@@ -8,6 +8,7 @@ const {
   GraphQLNonNull,
   GraphQLInputObjectType,
 } = require("graphql");
+
 const { District, Upazila, Union } = require("../models/location.models");
 
 const UserType = new GraphQLObjectType({
@@ -16,9 +17,44 @@ const UserType = new GraphQLObjectType({
     id: { type: GraphQLID },
     fullname: { type: GraphQLString },
     email: { type: GraphQLString },
-    phone: { type: GraphQLString },
     password: { type: GraphQLString },
-    photo: { type: GraphQLString },
+    image: { type: GraphQLString },
+    role: { type: GraphQLString },
+    favorites: {
+      type: new GraphQLList(
+        new GraphQLObjectType({
+          name: "Favoritetype",
+          fields: () => ({
+            id: { type: GraphQLID },
+            parkingLotId: { type: GraphQLID },
+          }),
+        })
+      ),
+    },
+    reserve: {
+      type: new GraphQLList(
+        new GraphQLObjectType({
+          name: "ReserveType",
+          fields: () => ({
+            id: { type: GraphQLID },
+            parkingLotId: { type: GraphQLID },
+          }),
+        })
+      ),
+    },
+    carts: {
+      type: new GraphQLList(
+        new GraphQLObjectType({
+          name: "CartType",
+          fields: () => ({
+            id: { type: GraphQLID },
+            parkingLotId: { type: GraphQLID },
+            quantity: { type: GraphQLInt },
+            total: { type: GraphQLInt },
+          }),
+        })
+      ),
+    },
   }),
 });
 

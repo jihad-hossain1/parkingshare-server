@@ -7,7 +7,10 @@ const {
   GraphQLNonNull,
   GraphQLEnumType,
 } = require("graphql");
-const { ParkingLotType } = require("../../typeDefs/parkingLotTypeDefs");
+const {
+  ParkingLotType,
+  ParkingLotCategoryType,
+} = require("../../typeDefs/parkingLotTypeDefs");
 const {
   AddressInput,
   PriceInput,
@@ -16,7 +19,36 @@ const {
 } = require("../../typeDefs/AllInputType");
 const ParkingLot = require("../../models/parkingLot.models");
 const { default: mongoose } = require("mongoose");
+const { UserType } = require("../../typeDefs/typeDefs");
+const User = require("../../models/user.models");
+const Category = require("../../models/category.models");
 
+const createParkingLotCategory = {
+  type: ParkingLotCategoryType,
+  args: { name: { type: new GraphQLNonNull(GraphQLString) } },
+  resolve: async (parent, { name }) => {
+    try {
+      if (name === "") {
+        return new Error("name filed are not allow empty");
+      }
+      const trimed = name.trim();
+
+      const findCategory = Category.findOne({ name: trimed });
+
+      if (findCategory) {
+        return new Error("category are alredy exist");
+      }
+
+      const newCategroy = new Category({ name: name });
+
+      const saveCategory = await newCategroy.save();
+
+      return saveCategory;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+};
 
 const createParkingLot = {
   type: ParkingLotType,
@@ -44,6 +76,7 @@ const createParkingLot = {
       location,
       categoryId,
       clientId,
+      lotType,
       address,
       price,
       avilableLot,
@@ -77,6 +110,7 @@ const createParkingLot = {
         clientId,
         address,
         price,
+        lotType,
         avilableLot,
       });
       const saveParkingLot = await newParkingLot.save();
@@ -88,4 +122,38 @@ const createParkingLot = {
   },
 };
 
-module.exports = { createParkingLot };
+const applyForParkingLot = {
+  type: UserType,
+  args: {
+    email: { type: new GraphQLNonNull(GraphQLString) },
+  },
+  resolve: async (parent, { email }) => {
+    try {
+      if (email == "") {
+        return new Error("user id must be filled");
+      }
+      const user = await User.findOne({ email: email });
+      if (!user) {
+        return new Error("user not found");
+      }
+
+      if (user.role === "client") {
+        return new Error("user already a client");
+      }
+      const updateUserRole = await User.findByIdAndUpdate(
+        { _id: id },
+        { $set: { role: "client" } },
+        { new: true }
+      );
+      return updateUserRole;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+};
+
+module.exports = {
+  createParkingLot,
+  applyForParkingLot,
+  createParkingLotCategory,
+};
