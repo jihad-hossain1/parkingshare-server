@@ -13,6 +13,7 @@ const {
   updateUser,
   deleteUser,
 } = require("../graphql/mutation/user.Mutation");
+const { updateDivision } = require("../graphql/mutation/location.mutation");
 
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
@@ -23,6 +24,7 @@ const RootQuery = new GraphQLObjectType({
     // locations
     divisions,
     division,
+
     // pakinglots
     getParkingLots,
     parkingLot,
@@ -36,6 +38,8 @@ const RootMutation = new GraphQLObjectType({
     createUser,
     updateUser,
     deleteUser,
+    // location
+    updateDivision,
     // parkinglot
     createParkingLot,
   },
