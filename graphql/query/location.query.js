@@ -1,4 +1,9 @@
-const { GraphQLID, GraphQLList, GraphQLNonNull } = require("graphql");
+const {
+  GraphQLID,
+  GraphQLList,
+  GraphQLNonNull,
+  GraphQLString,
+} = require("graphql");
 const { DivisionType } = require("../../typeDefs/typeDefs");
 const { Division } = require("../../models/location.models");
 
@@ -15,10 +20,10 @@ const divisions = {
 
 const division = {
   type: DivisionType,
-  args: { id: { type: new GraphQLNonNull(GraphQLID) } },
+  args: { name: { type: new GraphQLNonNull(GraphQLString) } },
   resolve: async (parent, args) => {
     try {
-      return await Division.findById(args.id);
+      return await Division.findOne({ name: args.name });
     } catch (error) {
       throw new Error(error.message);
     }
