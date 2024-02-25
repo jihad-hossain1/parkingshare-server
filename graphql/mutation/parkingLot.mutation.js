@@ -57,7 +57,7 @@ const createParkingLot = {
     image: { type: new GraphQLNonNull(GraphQLString) },
     location: { type: new GraphQLNonNull(GraphQLID) },
     categoryId: { type: new GraphQLNonNull(GraphQLID) },
-    clientId: { type: new GraphQLNonNull(GraphQLID) },
+    clientId: { type: new GraphQLNonNull(GraphQLString) },
     lotType: { type: new GraphQLNonNull(LotTypeInput) },
     address: {
       type: new GraphQLNonNull(AddressInput),
@@ -70,6 +70,7 @@ const createParkingLot = {
     },
   },
   resolve: async (parent, args) => {
+    console.log(args);
     const {
       name,
       image,
@@ -88,18 +89,29 @@ const createParkingLot = {
         return new Error("image field are empty are not allow");
       } else if (categoryId === "") {
         return new Error("categoryId field are empty are not allow");
+      } else if (clientId === "") {
+        return new Error("user email field are empty are not allow");
       } else if (location === "") {
         return new Error("location field are empty are not allow");
       } else if (!mongoose.Types.ObjectId.isValid(categoryId)) {
         return new Error("categoryId is not valid");
-      } else if (!mongoose.Types.ObjectId.isValid(clientId)) {
-        return new Error("user id is not valid object id");
       } else if (!mongoose.Types.ObjectId.isValid(location)) {
         return new Error("location id is not valid object id");
       } else if (price.length === 0) {
         return new Error("price field are empty are not allow");
       } else if (avilableLot.length === 0) {
         return new Error("avilableLot field are empty are not allow");
+      }
+
+      const clientRole = await User.findOne({ email: clientId });
+      if (!clientRole) {
+        return new Error("user are not found");
+      }
+
+      if (clientRole.role !== "client") {
+        return new Error(
+          "you are not able to create a Parking lot , Please apply for Client section"
+        );
       }
 
       const newParkingLot = new ParkingLot({

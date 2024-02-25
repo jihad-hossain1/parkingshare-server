@@ -1,6 +1,10 @@
 const { GraphQLObjectType, GraphQLSchema } = require("graphql");
 const { users, user } = require("../graphql/query/user.Query");
-const { divisions, division } = require("../graphql/query/location.query");
+const {
+  divisions,
+  division,
+  getDistrictByDivisionId,
+} = require("../graphql/query/location.query");
 const {
   getParkingLots,
   parkingLot,
@@ -34,6 +38,7 @@ const RootQuery = new GraphQLObjectType({
     // locations
     divisions,
     division,
+    getDistrictByDivisionId,
 
     // pakinglots
     getParkingLots,

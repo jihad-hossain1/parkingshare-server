@@ -5,7 +5,7 @@ const addressType = new mongoose.Schema({
     type: String,
     required: [true, "area filed are required"],
   },
-  map: {
+  _map: {
     type: String,
     required: [true, "map filed are required"],
   },

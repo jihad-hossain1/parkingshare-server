@@ -25,7 +25,7 @@ const ParkingLotType = new GraphQLObjectType({
     image: { type: GraphQLString },
     location: { type: GraphQLID },
     categoryId: { type: GraphQLID },
-    clientId: { type: GraphQLID },
+    clientId: { type: GraphQLString },
     lotType: { type: GraphQLString },
     status: { type: GraphQLString },
     address: {
@@ -34,7 +34,7 @@ const ParkingLotType = new GraphQLObjectType({
         fields: () => ({
           id: { type: GraphQLID },
           area: { type: GraphQLString },
-          map: { type: GraphQLString },
+          _map: { type: GraphQLString },
         }),
       }),
     },

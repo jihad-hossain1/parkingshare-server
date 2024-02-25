@@ -4,8 +4,8 @@ const {
   GraphQLNonNull,
   GraphQLString,
 } = require("graphql");
-const { DivisionType } = require("../../typeDefs/typeDefs");
-const { Division } = require("../../models/location.models");
+const { DivisionType, DistrictType } = require("../../typeDefs/typeDefs");
+const { Division, District } = require("../../models/location.models");
 
 const divisions = {
   type: new GraphQLList(DivisionType),
@@ -29,5 +29,16 @@ const division = {
     }
   },
 };
+const getDistrictByDivisionId = {
+  type: new GraphQLList(DistrictType),
+  args: { zid: { type: new GraphQLNonNull(GraphQLString) } },
+  resolve: async (parent, args) => {
+    try {
+      return await District.find({ division_zid: args.zid });
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+};
 
-module.exports = { divisions, division };
+module.exports = { divisions, division, getDistrictByDivisionId };

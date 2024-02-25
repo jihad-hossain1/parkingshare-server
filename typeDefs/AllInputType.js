@@ -11,7 +11,7 @@ const AddressInput = new GraphQLInputObjectType({
   name: "AddressInput",
   fields: {
     area: { type: new GraphQLNonNull(GraphQLString) },
-    map: { type: new GraphQLNonNull(GraphQLString) },
+    _map: { type: new GraphQLNonNull(GraphQLString) },
   },
 });
 
